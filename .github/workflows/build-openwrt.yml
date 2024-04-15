@@ -47,7 +47,7 @@ jobs:
           - rk35xx
         os:
           - ubuntu-22.04
- 
+
     steps:
     - name: 准备完成
       uses: actions/checkout@main
@@ -109,20 +109,20 @@ jobs:
         echo "------------------------------- 清理后磁盘详情 -------------------------------\n"
         df -Th
 
-     - name: 克隆源码
-       working-directory: /workdir
-       run: |
+    - name: 克隆源码
+      working-directory: /workdir
+      run: |
         df -hT $PWD
         git clone $REPO_URL -b ${{ matrix.REPO_BRANCH }} openwrt
         ln -sf /workdir/openwrt $GITHUB_WORKSPACE/openwrt
 
-     - name: 缓存构建动作
-       uses: klever1988/cachewrtbuild@main
-       with:
+    - name: 缓存构建动作
+      uses: klever1988/cachewrtbuild@main
+      with:
         ccache: 'true'
         mixkey: ${{ matrix.os }}-${{ matrix.ARCHITECTURE }}-${{ matrix.REPO_BRANCH }}
         prefix: ${{ github.workspace }}/openwrt
- 
+
     - name: 加载自定义 feeds
       env:
         FEEDS_CONF_PATH: ${{ matrix.ARCHITECTURE }}/${{ env.FEEDS_CONF }}
