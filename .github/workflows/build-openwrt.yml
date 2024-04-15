@@ -38,7 +38,8 @@ env:
 jobs:
   build:
     runs-on: ${{ matrix.os }}
-     matrix:
+    strategy:
+      matrix:
         REPO_BRANCH:
           - master
         ARCHITECTURE:
@@ -108,20 +109,20 @@ jobs:
         df -Th
 
      - name: 克隆源码
-      working-directory: /workdir
-      run: |
+       working-directory: /workdir
+       run: |
         df -hT $PWD
         git clone $REPO_URL -b ${{ matrix.REPO_BRANCH }} openwrt
         ln -sf /workdir/openwrt $GITHUB_WORKSPACE/openwrt
 
      - name: 缓存构建动作
-      uses: klever1988/cachewrtbuild@main
-      with:
+       uses: klever1988/cachewrtbuild@main
+       with:
         ccache: 'true'
         mixkey: ${{ matrix.os }}-${{ matrix.ARCHITECTURE }}-${{ matrix.REPO_BRANCH }}
         prefix: ${{ github.workspace }}/openwrt
  
-      - name: 加载自定义 feeds
+    - name: 加载自定义 feeds
       env:
         FEEDS_CONF_PATH: ${{ matrix.ARCHITECTURE }}/${{ env.FEEDS_CONF }}
       run: |
@@ -146,7 +147,7 @@ jobs:
         cd openwrt
         $GITHUB_WORKSPACE/$DIY_P2_SH
 
-    -- name: SSH 连接到 Actions
+    - name: SSH 连接到 Actions
       uses: P3TERX/ssh2actions@v1.0.0
       if: (github.event.inputs.ssh == 'true' && github.event.inputs.ssh  != 'false') || contains(github.event.action, 'ssh')
       env:
