@@ -46,7 +46,7 @@ jobs:
         ARCHITECTURE:
           - rk35xx
         os:
-          - ubuntu-22.04-4core
+          - ubuntu-22.04
 
     steps:
     - name: 准备完成
