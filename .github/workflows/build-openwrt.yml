@@ -232,11 +232,12 @@ jobs:
 
     - name: 自动发布固件到 Releases
       uses: softprops/action-gh-release@v2
-      if: startsWith(github.ref, 'refs/tags/') 
+      if:  steps.tag.outputs.status == 'success' && env.UPLOAD_RELEASE == 'true' && !cancelled()
       with:
         tag_name: ${{ steps.tag.outputs.release_tag }}
         body_path: release.txt
         files: ${{ env.FIRMWARE }}/*
+        token: ${{ github.token }}
 
     - name: 删除运行记录
       uses: GitRML/delete-workflow-runs@main
