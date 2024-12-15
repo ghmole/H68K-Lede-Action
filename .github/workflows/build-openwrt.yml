@@ -46,7 +46,7 @@ jobs:
         ARCHITECTURE:
           - armv8
         os:
-          - ubuntu-22.04
+          - ubuntu-24.04
 
     steps:
     - name: 准备完成
